@@ -1,0 +1,10 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+      name = "enum-from",
+      srcs = glob(["**/*.rs"]),
+      deps = [
+            "@crates//:quote",
+            "@crates//:proc-macro2"
+      ]
+)

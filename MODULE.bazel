@@ -1,0 +1,21 @@
+module(name = "enum-from", version = "0.0.1")
+
+bazel_dep(name = "rules_rust", version = "0.48.0")
+
+crate = use_extension(
+    "@rules_rust//crate_universe:extension.bzl",
+    "crate",
+    isolate = True
+)
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "Cargo.lock",
+    manifests = ["//:Cargo.bazel.toml"],
+)
+crate.annotation(
+      crate = "proc-macro2",
+      crate_features = [
+            "proc-macro"
+      ]
+)
+use_repo(crate, "crates")
