@@ -1,4 +1,4 @@
-module(name = "enum-from", version = "0.0.1")
+module(name = "enum-from", version = "0.1.0")
 
 bazel_dep(name = "rules_rust", version = "0.48.0")
 
@@ -16,6 +16,12 @@ crate.annotation(
       crate = "proc-macro2",
       crate_features = [
             "proc-macro"
+      ]
+)
+crate.annotation(
+      crate = "syn",
+      crate_features = [
+            "full"
       ]
 )
 use_repo(crate, "crates")

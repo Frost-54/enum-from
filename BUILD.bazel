@@ -1,10 +1,20 @@
-load("@rules_rust//rust:defs.bzl", "rust_library")
+load("@rules_rust//rust:defs.bzl", "rust_proc_macro", "rust_test")
 
-rust_library(
+rust_proc_macro(
       name = "enum-from",
-      srcs = glob(["**/*.rs"]),
+      srcs = glob(["src/**/*.rs"]),
       deps = [
             "@crates//:quote",
-            "@crates//:proc-macro2"
+            "@crates//:proc-macro2",
+            "@crates//:syn"
+      ],
+      visibility = ["//visibility:public"]
+)
+
+rust_test(
+      name = "tests",
+      srcs = glob(["tests/**/*.rs"]),
+      proc_macro_deps = [
+            ":enum-from"
       ]
 )
