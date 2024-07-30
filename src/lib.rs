@@ -96,6 +96,48 @@ fn removeAttributes(enumDefinition: &ItemEnum) -> TokenStream2 {
       }
 }
 
+/// Generates a mapping between two enums by implementing `std::convert::From<FromEnum>`
+/// for the annotated enum.
+/// <br>
+///
+/// # Usage
+///
+/// ```rust
+/// use enum_from::from;
+/// 
+/// enum FromEnum {
+///      Foo,
+///      Bar
+/// }
+/// 
+/// #[from(FromEnum)]
+/// enum ToEnum {
+///      Foo,
+///      Bar
+/// }
+/// 
+/// // If the variant in the from enum and target enum has the same name, no extra annotation is needed.
+/// // Otherwise, add `#[mapping(FromEnum::Variant)]` to each variant with different name.
+///
+/// #[from(FromEnum)]
+/// enum DifferentName {
+///      #[mapping(FromEnum::Foo)]
+///      A,
+///      #[mapping]
+///      Bar, // no need to specify name for variant with same name 
+/// }
+/// 
+/// //If the target enum has more variants than the from enum, each variant in the target enum has to be annotated with `#[mapping]`.
+///
+/// #[from(FromEnum)]
+/// enum MoreVariants {
+///       #[mapping(FromEnum::Foo)]
+///      A,
+///      #[mapping]
+///      Bar, // no need to specify name for variant with same name 
+///      Unrelated
+/// }
+/// ```
 #[proc_macro_attribute]
 pub fn from(attrs: TokenStream, body: TokenStream) -> TokenStream {
       let fromEnum = parse_macro_input!(attrs as Ident);
